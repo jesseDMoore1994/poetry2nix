@@ -5,7 +5,18 @@
 
 _poetry2nix_ turns [Poetry](https://python-poetry.org/) projects into Nix derivations without the need to actually write Nix expressions. It does so by parsing `pyproject.toml` and `poetry.lock` and converting them to Nix derivations on the fly.
 
-For more information, see [the announcement post on the Tweag blog](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
+For more information, see [the original announcement post](https://www.tweag.io/blog/2020-08-12-poetry2nix/).
+
+## Maintenance status: ⚠️ Unmaintained ⚠️
+
+The creator & long-term maintainer of poetry2nix ([@adisbladis](https://github.com/adisbladis)) is no longer using Poetry or Poetry2nix.
+This means that [poetry2nix is looking for maintainers](https://github.com/nix-community/poetry2nix/issues/1865).
+
+Poetry has a number of upcoming large changes, which poetry2nix is unlikely to gain support for:
+- [PEP-621 pyproject.toml metadata](https://github.com/python-poetry/poetry-core/pull/708)
+- [Poetry 2.0](https://github.com/python-poetry/poetry/issues/9448)
+
+If you are not already using Poetry & Poetry2nix, do consider [`uv`](https://docs.astral.sh/uv/) & [`uv2nix`](https://github.com/adisbladis/uv2nix).
 
 ## Quickstart Non-flake
 
@@ -17,7 +28,7 @@ by adding a `default.nix` next to your `pyproject.toml` and `poetry.lock` files:
 let
   sources = import ./nix/sources.nix;
   pkgs = import sources.nixpkgs { };
-  # Let all API attributes like "poetry2nix.mkPoetryApplication" 
+  # Let all API attributes like "poetry2nix.mkPoetryApplication"
   # use the packages and versions (python3, poetry etc.) from our pinned nixpkgs above
   # under the hood:
   poetry2nix = import sources.poetry2nix { inherit pkgs; };
@@ -147,7 +158,7 @@ Creates a Python application using the Python interpreter specified based on the
 - **meta**: application [meta](https://nixos.org/nixpkgs/manual/#chap-meta) data (_default:_ `{}`).
 - **python**: The Python interpreter to use (_default:_ `pkgs.python3`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
-- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ ]`).
+- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ "main" ]`).
 - **checkGroups**: Which Poetry 1.2.0+ dependency groups to install (independently of **groups**) to run unit tests (_default_: `[ "dev" ]`).
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
@@ -205,7 +216,7 @@ Creates an environment that provides a Python interpreter along with all depende
 - **editablePackageSources**: A mapping from package name to source directory, these will be installed in editable mode. Note that path dependencies with `develop = true` will be installed in editable mode unless explicitly passed to `editablePackageSources` as `null`.  (_default:_ `{}`).
 - **extraPackages**: A function taking a Python package set and returning a list of extra packages to include in the environment. This is intended for packages deliberately not added to `pyproject.toml` that you still want to include. An example of such a package may be `pip`. (_default:_ `(ps: [ ])`).
 - **preferWheels** : Use wheels rather than sdist as much as possible (_default_: `false`).
-- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ "dev" ]`).
+- **groups**: Which Poetry 1.2.0+ dependency groups to install (_default_: `[ "main" "dev" ]`).
 - **checkGroups**: Which Poetry 1.2.0+ dependency groups to install (independently of **groups**) to run unit tests (_default_: `[ "dev" ]`).
 - **extras**: Which Poetry `extras` to install (_default_: `[ "*" ]`, all extras).
 
@@ -631,10 +642,6 @@ nix-build --expr 'with import <unstable> {}; callPackage ./tests/default.nix {}'
 ## Contact
 
 We have a Matrix room at [#poetry2nix:blad.is](https://matrix.to/#/#poetry2nix:blad.is).
-
-## Acknowledgements
-
-Development of `poetry2nix` has been supported by [Tweag](https://tweag.io).
 
 ## License
 

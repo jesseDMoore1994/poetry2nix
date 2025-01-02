@@ -4543,6 +4543,9 @@
   "daemonocle": [
     "setuptools"
   ],
+  "daff": [
+    "setuptools"
+  ],
   "daiquiri": [
     "setuptools",
     "setuptools-scm"
@@ -20776,6 +20779,9 @@
   "pyzufall": [
     "setuptools"
   ],
+  "pzp": [
+    "setuptools"
+  ],
   "qasync": [
     "poetry-core"
   ],
@@ -23690,6 +23696,9 @@
     "setuptools"
   ],
   "sumtypes": [
+    "setuptools"
+  ],
+  "suncalc": [
     "setuptools"
   ],
   "sunpy": [

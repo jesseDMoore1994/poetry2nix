@@ -616,6 +616,7 @@ lib.composeManyExtensions [
             "43.0.0" = "sha256-TEQy8PrIaZshiBFTqR/OJp3e/bVM1USjcmpDYcjPJPM=";
             "43.0.1" = "sha256-wiAHM0ucR1X7GunZX8V0Jk2Hsi+dVdGgDKqcYjSdD7Q=";
             "43.0.3" = "sha256-d3Gt4VrBWk6qowwX0Epp4mc1PbySARVU9YMsHYKImCs=";
+            "44.0.0" = "sha256-LJIY2O8ul36JQmhiW8VhLCQ0BaX+j+HGr3e8RUkZpc8=";
           }.${version} or (
             lib.warn "Unknown cryptography version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
@@ -652,7 +653,7 @@ lib.composeManyExtensions [
                   name = "${old.pname}-${old.version}";
                   inherit sha256;
                 };
-              cargoRoot = "src/rust";
+              cargoRoot = if lib.versionAtLeast old.version "44" then "." else "src/rust";
             }
           );
 
@@ -978,6 +979,12 @@ lib.composeManyExtensions [
       gnureadline = prev.gnureadline.overridePythonAttrs (
         old: {
           buildInputs = old.buildInputs or [ ] ++ [ pkgs.ncurses ];
+        }
+      );
+
+      google-re2 = prev.google-re2.overridePythonAttrs (
+        old: {
+          buildInputs = old.buildInputs or [ ] ++ [ pkgs.abseil-cpp final.pybind11 pkgs.re2 ];
         }
       );
 
@@ -3295,6 +3302,7 @@ lib.composeManyExtensions [
             "0.19.0" = "sha256-H9IAg4lh7cmGaML5PuyYoe026pBNhOyvb/cf+oZcv0c=";
             "0.19.1" = "sha256-qIXdoCEVGCGUnTicZp4bUTJyGpFy9dwWY03lXUbxiHg=";
             "0.20.0" = "sha256-5vbR2EbrAPJ8pb78tj/+r9nOWgQDT5aO/LUQI4kAGjU=";
+            "0.20.1" = "sha256-vqJCGlp5S2wECfgleCexCb9xegA8b6wo7YNBbcsbXqk=";
           }.${version} or (
             lib.warn "Unknown rpds-py version: '${version}'. Please update getCargoHash." lib.fakeHash
           );
